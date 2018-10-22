@@ -6,12 +6,38 @@ var products = [
   {name: "Old Ford Car Model", price: "46", image: "https://s3.amazonaws.com/mernbook/marketplace/Ford.jpg"},
   {name: "Storm Trooper Figurine", price: "23", image: "https://s3.amazonaws.com/mernbook/marketplace/stormtrooper-1995015_960_720.jpg"}
 ];
-var cart = {
+
+var cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')):
+{
   items: [],
   total: 0
 };
 
+localStorage.setItem('cart', JSON.stringify(cart));
+
 $(document).ready(function(){
+  // products.forEach(function(product, index){
+  //   //console.log(index);
+  //   var colDiv = $('div').addClass('col-md-4');
+  //   var cardDiv = $('div').addClass('card');
+  //   $("#product-row").prepend(colDiv);
+  // })
+  
+  // $("#itemNo").text(cart.items.length);
+  
+  $("#showCartBtn").click(function(){
+    $("#cart").show();
+    $("#products").hide();
+    $("#showCartBtn").hide();
+  })
+  
+  $("#hideCartBtn").click(function(){
+    $("#cart").hide();
+    $("#showCartBtn").show();
+    $("#products").show();
+    $("hideCartBtn").hide();
+  })
+ 
   console.log("Start here");
   // Basic tasks
   // 1. Show / hide cart section on button click (Cart button / close cutton)
