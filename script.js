@@ -21,12 +21,10 @@ $(document).ready(function(){
     //console.log(index);
     var colDiv = $('<div>').addClass('col-md-4');
     var cardDiv = $('<div>').addClass('card');
-    
-    
     var productImage = $('<img>').addClass("card-img-top");
     productImage.attr('src', product.image);
     cardDiv.append(productImage);
-    var cardBodyDiv = $('<div>').addClass("card-body");
+    var cardBodyDiv = $('<div>').addClass('card-body');
     cardDiv.append (cardBodyDiv);
     var productTitle = $('<h5>').addClass ('card-title').text(product.name);
     cardBodyDiv.append(productTitle);
@@ -38,32 +36,64 @@ $(document).ready(function(){
       var cartItem = products[event.target.id];
       cartItem.quantity = 1;
       cart.items.push(cartItem);
+      
+      cart.total= cart.items.length * cartItem.price;
       $("#itemNo").text(cart.items.length);
+      $("#total").text(cart.total);
       localStorage.setItem('cart', JSON.stringify(cart));
     });
-    
     cardBodyDiv.append(addToCart);
     
     colDiv.append(cardDiv);
     $("#product-row").append(colDiv);
+  });
     
+  $("#itemNo").text(cart.items.length); 
+  $("#total").text(cart.total);
     
+  cart.items.forEach(function(item, index){
+    var colDiv = $('<div>').addClass('col-md-4');
+    var cardDiv = $('<div>').addClass('card');
+    var productImage = $('<img>').addClass("card-img-top");
+    productImage.attr('src', item.image);
+    cardDiv.append(productImage);
+    
+    var cardBodyDiv = $('<div>').addClass('card-body');
+    cardDiv.append(cardBodyDiv);
+    
+    var productTitle = $('<h5>').addClass('card-title').text(item.name);
+    cardBodyDiv.append(productTitle);
+    
+    var productPrice= $('<p>').addClass('card-text').text ("$"+ item.price + " x ");
+    cardBodyDiv.append(productPrice);
+    
+    var productQuantity= $('<input id=qnty type=number value=1 min=0>').bind ('keyup mouseup', function(){
+      item.quantity= $("#qnty").val();
+    });
+    productPrice.append(productQuantity);
+    
+    var addToCart = $('<button>').addClass ("btn btn-primary").text("Add to Cart").attr('id', index);
+    addToCart.click(function(event){
+      // console.log(item.price * item.quantity);
+      
+      var i;
+      for(i = 0; i < item.quantity; i++){
+        var cartItem = products[event.target.id];
+        cart.items.push(cartItem);
+      }
+      
+      cart.total = cart.total + (item.price * item.quantity);
+      $("#itemNo").text(cart.items.length);
+      $("#total").text(cart.total);
+      
+      localStorage.setItem('cart', JSON.stringify(cart));
+    });
+    cardBodyDiv.append(addToCart);
+    
+    colDiv.append(cardDiv);
+    $('#cart-row').append(colDiv);
   });
   
-  
-  
-  // <div class="col-md-4">
-  //    <div class="card">
-  //        <img class="card-img-top" src="https://s3.amazonaws.com/mernbook/marketplace/tardis.png" alt="Card image cap">
-  //           <div class="card-body">
-  //             <h5 class="card-title">Tardis Figurine</h5>
-  //             <p class="card-text">$ 14</p>
-  //             <button class="btn btn-primary">Add to Cart</button>
-  //           </div>
-  //    </div>
-  // </div>
-  
-  // $("#itemNo").text(cart.items.length);
   
   $("#showCartBtn").click(function(){
     $("#cart").show();
