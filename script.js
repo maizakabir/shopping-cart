@@ -65,7 +65,7 @@ $(document).ready(function(){
     var productPrice= $('<p>').addClass('card-text').text ("$"+ item.price + " x ");
     cardBodyDiv.append(productPrice);
     
-    var productQuantity= $('<input id=qnty type=number value=1 min=0>').bind ('keyup mouseup', function(){
+    var productQuantity= $('<input id=qnty type=number value=0 min=0>').bind ('keyup mouseup', function(){
       item.quantity= $("#qnty").val();
     });
     productPrice.append(productQuantity);
